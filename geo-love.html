@@ -1,0 +1,27 @@
+<head>
+  <title>geo-love</title>
+</head>
+
+<body>
+  <h1>geo-love: share the love!</h1>
+  <hr/>
+
+  {{> main}}
+</body>
+
+<template name="hello">
+  <button>Click Me</button>
+  <p>You've pressed the button {{counter}} times.</p>
+</template>
+
+<template name="main">
+  <h3>no map data testing</h3>
+  <div>
+    <input type="button" id="createPoint" value="Random Point" />
+    <input type="button" id="createLine" value="Random Line" />
+    <input type="button" id="createPolygon" value="Random Polygon" />
+  </div>
+  <div>
+    <input type="button" id="removeFeatures" value="Clear Features" />
+  </div>
+</template>
