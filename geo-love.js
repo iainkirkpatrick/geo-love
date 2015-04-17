@@ -14,6 +14,9 @@ if (Meteor.isClient) {
   //     Session.set('counter', Session.get('counter') + 1);
   //   }
   // });
+  function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  };
 
   Template.main.events({
     'click #removeFeatures': function() {
@@ -23,9 +26,9 @@ if (Meteor.isClient) {
     'click #createPoint': function() {
       //-43.45 to -43.60
       //172.40 to 172.75
-      function getRandomArbitrary(min, max) {
-        return Math.random() * (max - min) + min;
-      };
+      // function getRandomArbitrary(min, max) {
+      //   return Math.random() * (max - min) + min;
+      // };
 
       var latlng = [getRandomArbitrary(-43.60, -43.45), getRandomArbitrary(172.40, 172.75)];
       // console.log(latlng);
@@ -47,9 +50,9 @@ if (Meteor.isClient) {
     'click #createLine': function() {
       //-43.45 to -43.60
       //172.40 to 172.75
-      function getRandomArbitrary(min, max) {
-        return Math.random() * (max - min) + min;
-      };
+      // function getRandomArbitrary(min, max) {
+      //   return Math.random() * (max - min) + min;
+      // };
 
       var latlngs = [];
       i = 0;
@@ -75,9 +78,9 @@ if (Meteor.isClient) {
     'click #createPolygon': function() {
       //-43.45 to -43.60
       //172.40 to 172.75
-      function getRandomArbitrary(min, max) {
-        return Math.random() * (max - min) + min;
-      };
+      // function getRandomArbitrary(min, max) {
+      //   return Math.random() * (max - min) + min;
+      // };
 
       var latlngs = [];
       i = 0;
