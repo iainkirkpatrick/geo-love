@@ -1,19 +1,20 @@
 if (Meteor.isClient) {
-  // counter starts at 0
-  // Session.setDefault('counter', 0);
 
-  // Template.hello.helpers({
-  //   counter: function () {
-  //     return Session.get('counter');
-  //   }
-  // });
+  //testing loading external JS libs
+  //MapboxJS
+  $.getScript('https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js', function(data, textStatus, jqxhr) {
+    console.log(data);
+    console.log(textStatus);
+    mapboxSetup();
+  })
 
-  // Template.hello.events({
-  //   'click button': function () {
-  //     // increment the counter when button is clicked
-  //     Session.set('counter', Session.get('counter') + 1);
-  //   }
-  // });
+  //funcs
+  //probably not ideal for future to have all mapbox-related js code in funcs that run onload of mapbox.js...
+  function mapboxSetup() {
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
+    var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 12);
+  };
+
   function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   };
@@ -34,7 +35,7 @@ if (Meteor.isClient) {
       // console.log(latlng);
 
       //build and pass a dummy geojson object with the latlngs through
-      var geojson = { 
+      var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -63,7 +64,7 @@ if (Meteor.isClient) {
       }
 
       //build and pass a dummy geojson object with the latlngs through
-      var geojson = { 
+      var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "LineString",
@@ -95,7 +96,7 @@ if (Meteor.isClient) {
       //but agafonkin suggests leaflet poly's SHOULDN'T do this... resolve somehow
       latlngs.push(latlngs[0]);
 
-      var geojson = { 
+      var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "Polygon",
@@ -113,5 +114,6 @@ if (Meteor.isClient) {
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
+    console.log("Server is running...")
   });
 }
