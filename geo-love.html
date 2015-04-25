@@ -12,7 +12,7 @@
 
 <template name="main">
   <h3>TESTING</h3>
-  <div id='map'></div>
+  {{> map}}
   <div>
     <input type="button" id="createPoint" value="Random Point" />
     <input type="button" id="createLine" value="Random Line" />
@@ -21,4 +21,13 @@
   <div>
     <input type="button" id="removeFeatures" value="Clear Features" />
   </div>
+</template>
+
+<template name="map">
+  <div id='map'></div>
+  <p>Stored data is:
+    {{#each data}}
+      {{geometry.type}}
+    {{/each}}
+  </p>
 </template>

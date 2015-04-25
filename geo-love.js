@@ -106,7 +106,13 @@ if (Meteor.isClient) {
       Meteor.call('geojsonhint', geojson);
     }
   });
-};
+
+  Template.map.helpers({
+    'data': function() {
+      return allGeoData.find().fetch();
+    }
+  });
+}
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
