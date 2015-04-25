@@ -1,6 +1,9 @@
 allGeoData = new Mongo.Collection("allGeoData");
 
 if (Meteor.isClient) {
+  //client global vars (probably not a great idea, but testing atm)
+  var map;
+  var geoJsonLayer;
 
   //testing loading external JS libs
   //MapboxJS
@@ -8,13 +11,26 @@ if (Meteor.isClient) {
     console.log(data);
     console.log(textStatus);
     mapboxSetup();
-  })
+  });
 
   //funcs
   //probably not ideal for future to have all mapbox-related js code in funcs that run onload of mapbox.js...
+  //possibly better to chuck this into Template.myTemplate.onRendered() ?
+  //as this func is meant for DOM manipulation that persists across re-renderings, and only occurs once on init
   function mapboxSetup() {
     L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
-    var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 12);
+    map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
+
+    //.featureLayer.setGeoJSON(allGeoData.findOne());
+
+    // geojsonLayer = L.geoJson.addTo(map);
+    // data = allGeoData.find().fetch(); //array
+    // //console.log(data.length);
+    // for (var i = 0; i < data.length; i++) {
+    //   console.log(data[i]);
+    //   L.mapbox.featureLayer(data[i]).addTo(map);
+    // }
+
   };
 
   function getRandomArbitrary(min, max) {
@@ -46,12 +62,6 @@ if (Meteor.isClient) {
       console.log('point created!')
     },
     'click #createLine': function() {
-      //-43.45 to -43.60
-      //172.40 to 172.75
-      // function getRandomArbitrary(min, max) {
-      //   return Math.random() * (max - min) + min;
-      // };
-
       var latlngs = [];
       i = 0;
       while (i < 2) {
@@ -71,15 +81,11 @@ if (Meteor.isClient) {
           "createdWhere": "clientscript"
           }
         };
-      Meteor.call('geojsonhint', geojson);
+      //Meteor.call('geojsonhint', geojson);
+      allGeoData.insert(geojson);
+      console.log('lineString created!')
     },
     'click #createPolygon': function() {
-      //-43.45 to -43.60
-      //172.40 to 172.75
-      // function getRandomArbitrary(min, max) {
-      //   return Math.random() * (max - min) + min;
-      // };
-
       var latlngs = [];
       i = 0;
       while (i < 4) {
@@ -103,8 +109,17 @@ if (Meteor.isClient) {
           "createdWhere": "clientscript"
           }
         };
-      Meteor.call('geojsonhint', geojson);
+      //Meteor.call('geojsonhint', geojson);
+      allGeoData.insert(geojson);
+      console.log('polygon created!')
     }
+  });
+
+  Template.map.onRendered(function(){
+    // console.log(this); // could i use 'this' somehow for better code?
+    // L.mapbox.featureLayer(function(){
+    //   return allGeoData.find().fetch();
+    // }).addTo(map);
   });
 
   Template.map.helpers({
