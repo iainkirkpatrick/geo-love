@@ -1,3 +1,5 @@
+allGeoData = new Mongo.Collection("allGeoData");
+
 if (Meteor.isClient) {
 
   //testing loading external JS libs
@@ -21,16 +23,10 @@ if (Meteor.isClient) {
 
   Template.main.events({
     'click #removeFeatures': function() {
-      console.log('future func to removeAllFeatures');
-      // Meteor.call('removeAllFeatures');
+      Meteor.call('removeAllFeatures');
+      console.log('all features removed');
     },
     'click #createPoint': function() {
-      //-43.45 to -43.60
-      //172.40 to 172.75
-      // function getRandomArbitrary(min, max) {
-      //   return Math.random() * (max - min) + min;
-      // };
-
       var latlng = [getRandomArbitrary(-43.60, -43.45), getRandomArbitrary(172.40, 172.75)];
       // console.log(latlng);
 
@@ -40,13 +36,14 @@ if (Meteor.isClient) {
         "geometry": {
           "type": "Point",
           "coordinates": latlng
-          },
+        },
         "properties": {
           "createdWhere": "clientscript"
           }
         };
-      Meteor.call('geojsonhint', geojson);
-
+      //Meteor.call('geojsonhint', geojson);
+      allGeoData.insert(geojson);
+      console.log('point created!')
     },
     'click #createLine': function() {
       //-43.45 to -43.60
@@ -115,5 +112,13 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
     console.log("Server is running...")
+
+    return Meteor.methods({
+      removeAllFeatures: function(){
+        return allGeoData.remove({});
+      }
+    })
+
+    //server collections
   });
 }
