@@ -2,36 +2,36 @@ allGeoData = new Mongo.Collection("allGeoData");
 
 if (Meteor.isClient) {
   //client global vars (probably not a great idea, but testing atm)
-  var map;
-  var geoJsonLayer;
+  // var map;
+  // var geoJsonLayer;
 
   //testing loading external JS libs
   //MapboxJS
-  $.getScript('https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js', function(data, textStatus, jqxhr) {
-    console.log(data);
-    console.log(textStatus);
-    mapboxSetup();
-  });
+  // $.getScript('https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js', function(data, textStatus, jqxhr) {
+  //   console.log(data);
+  //   console.log(textStatus);
+  //   mapboxSetup();
+  // });
 
   //funcs
   //probably not ideal for future to have all mapbox-related js code in funcs that run onload of mapbox.js...
   //possibly better to chuck this into Template.myTemplate.onRendered() ?
   //as this func is meant for DOM manipulation that persists across re-renderings, and only occurs once on init
-  function mapboxSetup() {
-    L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
-    map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
+  // function mapboxSetup() {
+  //   L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
+  //   map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
 
-    //.featureLayer.setGeoJSON(allGeoData.findOne());
+  //   //.featureLayer.setGeoJSON(allGeoData.findOne());
 
-    // geojsonLayer = L.geoJson.addTo(map);
-    // data = allGeoData.find().fetch(); //array
-    // //console.log(data.length);
-    // for (var i = 0; i < data.length; i++) {
-    //   console.log(data[i]);
-    //   L.mapbox.featureLayer(data[i]).addTo(map);
-    // }
+  //   // geojsonLayer = L.geoJson.addTo(map);
+  //   // data = allGeoData.find().fetch(); //array
+  //   // //console.log(data.length);
+  //   // for (var i = 0; i < data.length; i++) {
+  //   //   console.log(data[i]);
+  //   //   L.mapbox.featureLayer(data[i]).addTo(map);
+  //   // }
 
-  };
+  // };
 
   function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
@@ -116,6 +116,8 @@ if (Meteor.isClient) {
   });
 
   Template.map.onRendered(function(){
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
+    map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
     // console.log(this); // could i use 'this' somehow for better code?
     // L.mapbox.featureLayer(function(){
     //   return allGeoData.find().fetch();
