@@ -33,6 +33,24 @@ if (Meteor.isClient) {
 
   // };
 
+  //testing loading mapbox example data
+  var geojson =  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [172.4962632206967, -43.552843392221256]
+    },
+    "properties": {
+      "title": "Mapbox DC",
+      "description": "1714 14th St NW, Washington DC",
+      "marker-color": "#fc4353",
+      "marker-size": "large",
+      "marker-symbol": "monument"
+    }
+  };
+
+  var geojsonMongo = allGeoData.find().fetch();
+
   function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   };
@@ -117,7 +135,14 @@ if (Meteor.isClient) {
 
   Template.map.onRendered(function(){
     L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
-    map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
+    var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
+
+    allGeoData.find().observe({
+      added: function(document){
+        L.marker(document.geometry.coordinates).addTo(map);
+      }
+    });
+
     // console.log(this); // could i use 'this' somehow for better code?
     // L.mapbox.featureLayer(function(){
     //   return allGeoData.find().fetch();
