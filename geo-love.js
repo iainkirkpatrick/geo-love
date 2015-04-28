@@ -137,11 +137,17 @@ if (Meteor.isClient) {
     L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
     var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
 
-    allGeoData.find().observe({
-      added: function(document){
-        L.marker(document.geometry.coordinates).addTo(map);
-      }
-    });
+    // allGeoData.find().observe({
+    //   added: function(document){
+    //     L.marker(document.geometry.coordinates).addTo(map);
+    //   }
+    // });
+
+    Tracker.autorun(function(){
+      //var geojson = allGeoData.find().fetch();
+      var data = geojson;
+      L.mapbox.featureLayer(data).addTo(map);
+    })
 
     // console.log(this); // could i use 'this' somehow for better code?
     // L.mapbox.featureLayer(function(){
