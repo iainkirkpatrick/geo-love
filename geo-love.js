@@ -96,6 +96,13 @@ if (Meteor.isClient) {
     L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
     var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
 
+    var drawControl = new L.Control.Draw({
+      // edit: {
+      //   featureGroup: featureGroup
+      // }
+    }).addTo(map);
+
+
     Tracker.autorun(function(){
       var geojson = allGeoData.find().fetch();
       map.featureLayer.setGeoJSON(geojson);
