@@ -1,10 +1,6 @@
 allGeoData = new Mongo.Collection("allGeoData");
 
 if (Meteor.isClient) {
-  //client global vars (probably not a great idea, but testing atm)
-  // var map;
-  // var geoJsonLayer;
-
   //testing loading external JS libs
   //MapboxJS
   // $.getScript('https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js', function(data, textStatus, jqxhr) {
@@ -12,44 +8,6 @@ if (Meteor.isClient) {
   //   console.log(textStatus);
   //   mapboxSetup();
   // });
-
-  //funcs
-  //probably not ideal for future to have all mapbox-related js code in funcs that run onload of mapbox.js...
-  //possibly better to chuck this into Template.myTemplate.onRendered() ?
-  //as this func is meant for DOM manipulation that persists across re-renderings, and only occurs once on init
-  // function mapboxSetup() {
-  //   L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
-  //   map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
-
-  //   //.featureLayer.setGeoJSON(allGeoData.findOne());
-
-  //   // geojsonLayer = L.geoJson.addTo(map);
-  //   // data = allGeoData.find().fetch(); //array
-  //   // //console.log(data.length);
-  //   // for (var i = 0; i < data.length; i++) {
-  //   //   console.log(data[i]);
-  //   //   L.mapbox.featureLayer(data[i]).addTo(map);
-  //   // }
-
-  // };
-
-  //testing loading mapbox example data
-  var geojson =  {
-    "type": "Feature",
-    "geometry": {
-      "type": "Point",
-      "coordinates": [172.4962632206967, -43.552843392221256]
-    },
-    "properties": {
-      "title": "Mapbox DC",
-      "description": "1714 14th St NW, Washington DC",
-      "marker-color": "#fc4353",
-      "marker-size": "large",
-      "marker-symbol": "monument"
-    }
-  };
-
-  var geojsonMongo = allGeoData.find().fetch();
 
   function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
@@ -61,7 +19,8 @@ if (Meteor.isClient) {
       console.log('all features removed');
     },
     'click #createPoint': function() {
-      var latlng = [getRandomArbitrary(-43.60, -43.45), getRandomArbitrary(172.40, 172.75)];
+      // var latlng = [getRandomArbitrary(-43.60, -43.45), getRandomArbitrary(172.40, 172.75)];
+      var lonlat = [getRandomArbitrary(172.40, 172.75), getRandomArbitrary(-43.60, -43.45)];
       // console.log(latlng);
 
       //build and pass a dummy geojson object with the latlngs through
@@ -69,7 +28,7 @@ if (Meteor.isClient) {
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": latlng
+          "coordinates": lonlat
         },
         "properties": {
           "createdWhere": "clientscript"
@@ -80,20 +39,20 @@ if (Meteor.isClient) {
       console.log('point created!')
     },
     'click #createLine': function() {
-      var latlngs = [];
+      var lonlats = [];
       i = 0;
       while (i < 2) {
-        var latlng = [getRandomArbitrary(-43.60, -43.45), getRandomArbitrary(172.40, 172.75)];
-        latlngs.push(latlng);
+        var lonlat = [getRandomArbitrary(172.40, 172.75),getRandomArbitrary(-43.60, -43.45)];
+        lonlats.push(lonlat);
         i++;
       }
 
-      //build and pass a dummy geojson object with the latlngs through
+      //build and pass a dummy geojson object with the lonlats through
       var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "LineString",
-          "coordinates": latlngs
+          "coordinates": lonlats
           },
         "properties": {
           "createdWhere": "clientscript"
@@ -104,24 +63,24 @@ if (Meteor.isClient) {
       console.log('lineString created!')
     },
     'click #createPolygon': function() {
-      var latlngs = [];
+      var lonlats = [];
       i = 0;
       while (i < 4) {
-        var latlng = [getRandomArbitrary(-43.60, -43.45), getRandomArbitrary(172.40, 172.75)];
-        latlngs.push(latlng);
+        var lonlat = [getRandomArbitrary(172.40, 172.75), getRandomArbitrary(-43.60, -43.45)];
+        lonlats.push(lonlat);
         i++;
       }
 
-      //build and pass a dummy geojson object with the latlngs through
+      //build and pass a dummy geojson object with the lonlats through
       //note for a correct geojson poly, the last point must be same as first
       //but agafonkin suggests leaflet poly's SHOULDN'T do this... resolve somehow
-      latlngs.push(latlngs[0]);
+      lonlats.push(lonlats[0]);
 
       var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "Polygon",
-          "coordinates": [ latlngs ]
+          "coordinates": [ lonlats ]
           },
         "properties": {
           "createdWhere": "clientscript"
@@ -137,17 +96,10 @@ if (Meteor.isClient) {
     L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
     var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
 
-    // allGeoData.find().observe({
-    //   added: function(document){
-    //     L.marker(document.geometry.coordinates).addTo(map);
-    //   }
-    // });
-
     Tracker.autorun(function(){
-      //var geojson = allGeoData.find().fetch();
-      var data = geojson;
-      L.mapbox.featureLayer(data).addTo(map);
-    })
+      var geojson = allGeoData.find().fetch();
+      map.featureLayer.setGeoJSON(geojson);
+    });
 
     // console.log(this); // could i use 'this' somehow for better code?
     // L.mapbox.featureLayer(function(){
@@ -168,11 +120,10 @@ if (Meteor.isServer) {
     console.log("Server is running...")
 
     return Meteor.methods({
+      //.remove on a collection can only be run server-side due to security
       removeAllFeatures: function(){
         return allGeoData.remove({});
       }
     })
-
-    //server collections
   });
 }
