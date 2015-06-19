@@ -2,19 +2,15 @@
   <title>geo-love</title>
   <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
 </head>
-
 <body>
   <h1>geo-love: v2</h1>
   <hr/>
 
   {{> main}}
 </body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template>
 
 <template name="main">
   <!-- <h3>no map data testing</h3> -->
@@ -28,4 +24,13 @@
   <div>
     <input type="button" id="removeFeatures" value="Clear Features" />
   </div>
+</template>
+
+<template name="map">
+  <div id='map'></div>
+  <p>Stored data is:
+    {{#each data}}
+      {{geometry.type}}:{{geometry.coordinates}}
+    {{/each}}
+  </p>
 </template>
