@@ -1,22 +1,22 @@
 if (Meteor.isClient) {
-  // counter starts at 0
-  // Session.setDefault('counter', 0);
-
-  // Template.hello.helpers({
-  //   counter: function () {
-  //     return Session.get('counter');
-  //   }
-  // });
-
-  // Template.hello.events({
-  //   'click button': function () {
-  //     // increment the counter when button is clicked
-  //     Session.set('counter', Session.get('counter') + 1);
-  //   }
-  // });
+  //funcs
   function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   };
+
+  //leaflet code
+
+  // Provide your access token
+  //L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
+  // Create a map in the div #map
+  //L.mapbox.map('map', 'envintage.tm2-basemap');
+
+  //var myLayer = L.geoJson().addTo(map);
+
+  Template.main.onRendered(function(){
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
+    var map = L.mapbox.map('map', 'envintage.i9eofp14');
+  });
 
   Template.main.events({
     'click #removeFeatures': function() {
@@ -34,7 +34,7 @@ if (Meteor.isClient) {
       // console.log(latlng);
 
       //build and pass a dummy geojson object with the latlngs through
-      var geojson = { 
+      var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -44,8 +44,9 @@ if (Meteor.isClient) {
           "createdWhere": "clientscript"
           }
         };
-      Meteor.call('geojsonhint', geojson);
 
+      myLayer.addData(geojson);
+      //Meteor.call('geojsonhint', geojson);
     },
     'click #createLine': function() {
       //-43.45 to -43.60
@@ -63,7 +64,7 @@ if (Meteor.isClient) {
       }
 
       //build and pass a dummy geojson object with the latlngs through
-      var geojson = { 
+      var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "LineString",
@@ -95,7 +96,7 @@ if (Meteor.isClient) {
       //but agafonkin suggests leaflet poly's SHOULDN'T do this... resolve somehow
       latlngs.push(latlngs[0]);
 
-      var geojson = { 
+      var geojson = {
         "type": "Feature",
         "geometry": {
           "type": "Polygon",

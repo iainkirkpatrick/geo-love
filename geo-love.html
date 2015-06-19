@@ -1,9 +1,11 @@
 <head>
   <title>geo-love</title>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
 </head>
 
 <body>
-  <h1>geo-love: share the love!</h1>
+  <h1>geo-love: v2</h1>
   <hr/>
 
   {{> main}}
@@ -15,7 +17,9 @@
 </template>
 
 <template name="main">
-  <h3>no map data testing</h3>
+  <!-- <h3>no map data testing</h3> -->
+  <h3>Map Testing</h3>
+  <div id='map'></div>
   <div>
     <input type="button" id="createPoint" value="Random Point" />
     <input type="button" id="createLine" value="Random Line" />
