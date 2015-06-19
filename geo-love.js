@@ -1,31 +1,9 @@
 allGeoData = new Mongo.Collection("allGeoData");
 
 if (Meteor.isClient) {
-  //testing loading external JS libs
-  //MapboxJS
-  // $.getScript('https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js', function(data, textStatus, jqxhr) {
-  //   console.log(data);
-  //   console.log(textStatus);
-  //   mapboxSetup();
-  // });
-
   function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
   };
-
-  //leaflet code
-
-  // Provide your access token
-  //L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
-  // Create a map in the div #map
-  //L.mapbox.map('map', 'envintage.tm2-basemap');
-
-  //var myLayer = L.geoJson().addTo(map);
-
-  Template.main.onRendered(function(){
-    L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
-    var map = L.mapbox.map('map', 'envintage.i9eofp14');
-  });
 
   Template.main.events({
     'click #removeFeatures': function() {

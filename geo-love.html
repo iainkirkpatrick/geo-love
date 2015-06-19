@@ -13,9 +13,11 @@
 </body>
 
 <template name="main">
-  <!-- <h3>no map data testing</h3> -->
   <h3>Map Testing</h3>
-  <div id='map'></div>
+  <!-- <div id='map'></div> -->
+  <div>
+    {{> map}}
+  </div>
   <div>
     <input type="button" id="createPoint" value="Random Point" />
     <input type="button" id="createLine" value="Random Line" />
