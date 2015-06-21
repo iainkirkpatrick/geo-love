@@ -112,8 +112,10 @@ if (Meteor.isClient) {
 
     Tracker.autorun(function(){
       //working for all features add
-      var geojson = allGeoData.find().fetch();
+      //var geojson = allGeoData.find().fetch();
       //map.featureLayer.setGeoJSON(geojson);
+
+      featureGroup.clearLayers();
 
       allGeoData.find().forEach(function(data){
         // L.geoJson(data).addTo(map);
