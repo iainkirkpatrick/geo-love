@@ -92,13 +92,21 @@ if (Meteor.isClient) {
     //map.featureLayer //OLD
 
     var drawControl = new L.Control.Draw({
+      draw: {
+        circle: false
+      },
       edit: {
         featureGroup: featureGroup
       }
     }).addTo(map);
 
     map.on('draw:created', function(e) {
-      featureGroup.addLayer(e.layer);
+      // shouldn't need to actually add to featureGroup here, can just add to meteor collection
+      //featureGroup.addLayer(e.layer);
+
+      var geojson = e.layer.toGeoJSON();
+      allGeoData.insert(geojson);
+      console.log(e.layerType + ' created!')
     });
 
 
