@@ -30,9 +30,8 @@
 
 <template name="map">
   <div id='map'></div>
-  <p>Stored data is:
+  <h4>Stored data is:</h4>
     {{#each data}}
-      {{geometry.type}}:{{geometry.coordinates}}
+      <p>{{geometry.type}}: {{geometry.coordinates}}</p>
     {{/each}}
-  </p>
 </template>
