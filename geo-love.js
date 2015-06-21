@@ -88,33 +88,35 @@ if (Meteor.isClient) {
     L.mapbox.accessToken = 'pk.eyJ1IjoiZW52aW50YWdlIiwiYSI6Inh6U0p2bkEifQ.p6VrrwOc_w0Ij-iTj7Zz8A';
     var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
 
-    //var featureGroup = L.featureGroup().addTo(map);
-
-    var featureLayer = map.featureLayer;
+    var featureGroup = L.featureGroup().addTo(map);
+    //map.featureLayer //OLD
 
     var drawControl = new L.Control.Draw({
       edit: {
-        featureGroup: featureLayer
+        featureGroup: featureGroup
       }
     }).addTo(map);
 
     map.on('draw:created', function(e) {
-      featureLayer.addLayer(e.layer);
+      featureGroup.addLayer(e.layer);
     });
 
 
     Tracker.autorun(function(){
       //working for all features add
       var geojson = allGeoData.find().fetch();
-      map.featureLayer.setGeoJSON(geojson);
+      //map.featureLayer.setGeoJSON(geojson);
 
-      // allGeoData.find().forEach(function(data){
-      //   //L.geoJson(data).addTo(map);
-      //   console.log(data);
-      //   L.geoJson.geometryToLayer(data).addTo(map);
-      // });
-      // // featureGroup.
+      allGeoData.find().forEach(function(data){
+        // L.geoJson(data).addTo(map);
+        //
+        // var d = L.geoJson(data);
+        // console.log(L.GeoJSON.geometryToLayer(data));
 
+        featureGroup.addLayer(L.GeoJSON.geometryToLayer(data));
+
+        // L.geoJson.geometryToLayer(data).addTo(map);
+      });
     });
 
     // console.log(this); // could i use 'this' somehow for better code?
