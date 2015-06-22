@@ -5,6 +5,8 @@ if (Meteor.isClient) {
     return Math.random() * (max - min) + min;
   };
 
+
+
   Template.main.events({
     'click #removeFeatures': function() {
       Meteor.call('removeAllFeatures');
@@ -109,6 +111,13 @@ if (Meteor.isClient) {
       console.log(e.layerType + ' created!')
     });
 
+    map.on('draw:edited', function (e) {
+      var layers = e.layers;
+      layers.eachLayer(function (layer) {
+        console.log(layer._id);
+        //var geojson = layer.toGeoJSON();
+      });
+    });
 
     Tracker.autorun(function(){
       //working for all features add
@@ -121,10 +130,11 @@ if (Meteor.isClient) {
         // L.geoJson(data).addTo(map);
         //
         // var d = L.geoJson(data);
-        // console.log(L.GeoJSON.geometryToLayer(data));
-
-        featureGroup.addLayer(L.GeoJSON.geometryToLayer(data));
-
+        // console.log(data);
+        var feature = L.GeoJSON.geometryToLayer(data);
+        //add auto-generated meteor collection ID to leaflet layer
+        feature._id = data._id;
+        featureGroup.addLayer(feature);
         // L.geoJson.geometryToLayer(data).addTo(map);
       });
     });
@@ -135,11 +145,11 @@ if (Meteor.isClient) {
     // }).addTo(map);
   });
 
-  Template.map.helpers({
-    'data': function() {
-      return allGeoData.find().fetch();
-    }
-  });
+  // Template.map.helpers({
+  //   'data': function() {
+  //     return allGeoData.find().fetch();
+  //   }
+  // });
 }
 
 if (Meteor.isServer) {
