@@ -5,8 +5,6 @@ if (Meteor.isClient) {
     return Math.random() * (max - min) + min;
   };
 
-
-
   Template.main.events({
     'click #removeFeatures': function() {
       Meteor.call('removeAllFeatures');
@@ -91,7 +89,6 @@ if (Meteor.isClient) {
     var map = L.mapbox.map('map', 'envintage.i9eofp14').setView([-41.28787, 174.77772], 6);
 
     var featureGroup = L.featureGroup().addTo(map);
-    //map.featureLayer //OLD
 
     var drawControl = new L.Control.Draw({
       draw: {
@@ -130,36 +127,17 @@ if (Meteor.isClient) {
     });
 
     Tracker.autorun(function(){
-      //working for all features add
-      //var geojson = allGeoData.find().fetch();
-      //map.featureLayer.setGeoJSON(geojson);
-
+      //efficiency gains to be made if i can only update diffs etc
       featureGroup.clearLayers();
 
       allGeoData.find().forEach(function(data){
-        // L.geoJson(data).addTo(map);
-        //
-        // var d = L.geoJson(data);
-        // console.log(data);
         var feature = L.GeoJSON.geometryToLayer(data);
         //add auto-generated meteor collection ID to leaflet layer
         feature._id = data._id;
         featureGroup.addLayer(feature);
-        // L.geoJson.geometryToLayer(data).addTo(map);
       });
     });
-
-    // console.log(this); // could i use 'this' somehow for better code?
-    // L.mapbox.featureLayer(function(){
-    //   return allGeoData.find().fetch();
-    // }).addTo(map);
   });
-
-  // Template.map.helpers({
-  //   'data': function() {
-  //     return allGeoData.find().fetch();
-  //   }
-  // });
 }
 
 if (Meteor.isServer) {

@@ -6,10 +6,14 @@ aka drawing of points, lines and polygons on a map and seeing them update on ano
 
 #PROGRESS
 
-- leaflet draw plugin implemented, drawing layers to the common Mapbox FeatureLayer.
-- but better (and better challenge) to convert all client-side layers to Leaflet layers, and store all server-side data as GEOJSON.
+- styling? purecss.io?
+- sessions? with individual logins for users, and different 'logins' for collective maps?
+- different name?
+- mapbox GL?
 
 #NOTES
 
-- need to have GEOJSON in the database, but probably should have proper leaflet Layers displaying on the map (otherwise it looks difficult to manage leaflet.draw layers). in which case i need to convert all the database GEOJSON to layers when the reactive method is invalidated. using a forEach on the meteor collection provides other benefits too (custom styling etc). use toGeoJSON method (inherited from layergroup) and geometryToLayer (from L.geoJson) for conversion.
+- can do custom styling if wanted, don't forget!
 - drawing circles with leaflet Draw disabled for now, as circles aren't part of the GEOJSON spec... might be able to figure out a nice solution later.
+- some kind of input for feature properties / data when a feature is created
+- would be cool to have onclick popups for each feature, that contain the properties of each feature? i.e. similar to Google Maps popups for GIS data
