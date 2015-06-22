@@ -104,8 +104,6 @@ if (Meteor.isClient) {
 
     map.on('draw:created', function(e) {
       // shouldn't need to actually add to featureGroup here, can just add to meteor collection
-      //featureGroup.addLayer(e.layer);
-
       var geojson = e.layer.toGeoJSON();
       allGeoData.insert(geojson);
       console.log(e.layerType + ' created!')
@@ -114,8 +112,20 @@ if (Meteor.isClient) {
     map.on('draw:edited', function (e) {
       var layers = e.layers;
       layers.eachLayer(function (layer) {
-        console.log(layer._id);
-        //var geojson = layer.toGeoJSON();
+        //find the respective collection item, update it
+        allGeoData.update({
+          _id: layer._id,
+        },
+        layer.toGeoJSON());
+      });
+    });
+
+    map.on('draw:deleted', function (e) {
+      var layers = e.layers;
+      layers.eachLayer(function (layer) {
+        allGeoData.remove({
+          _id: layer._id,
+        });
       });
     });
 
